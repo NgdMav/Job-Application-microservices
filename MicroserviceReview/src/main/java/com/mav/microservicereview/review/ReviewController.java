@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/companies/{companyId}/reviews")
+@RequestMapping("/reviews")
 class ReviewController {
 
     private final ReviewService reviewService;
@@ -17,28 +17,28 @@ class ReviewController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<Review>> getAll(@PathVariable Long companyId) {
+    public ResponseEntity<List<Review>> getAll(@RequestParam Long companyId) {
         return ResponseEntity.ok(reviewService.getAll(companyId));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Review> getOneById(@PathVariable Long companyId, @PathVariable Long id) {
-        return ResponseEntity.ok(reviewService.getOneById(companyId, id));
+    public ResponseEntity<Review> getOneById(@PathVariable Long id) {
+        return ResponseEntity.ok(reviewService.getOneById(id));
     }
 
     @PostMapping("/")
-    public ResponseEntity<Review> create(@PathVariable Long companyId, @Valid @RequestBody Review review) {
+    public ResponseEntity<Review> create(@RequestParam Long companyId, @Valid @RequestBody Review review) {
         return ResponseEntity.ok(reviewService.create(companyId, review));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long companyId, @PathVariable Long id) {
-        reviewService.delete(companyId, id);
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        reviewService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Review> update(@PathVariable Long companyId, @PathVariable Long id, @Valid @RequestBody Review review) {
-        return ResponseEntity.ok(reviewService.update(companyId, id, review));
+    public ResponseEntity<Review> update(@PathVariable Long id, @Valid @RequestBody Review review) {
+        return ResponseEntity.ok(reviewService.update(id, review));
     }
 }

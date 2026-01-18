@@ -31,9 +31,9 @@ class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Review getOneById(Long companyId, Long id) {
-        return reviewMapper.toDomain(reviewRepository.findByCompanyIdAndId(companyId,id).orElseThrow(
-                () -> new EntityNotFoundException("Review with id " + id + " and company id " + companyId + " not found")
+    public Review getOneById(Long id) {
+        return reviewMapper.toDomain(reviewRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Review with id " + id + " not found")
         ));
     }
 
@@ -46,19 +46,19 @@ class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public void delete(Long companyId, Long id) {
-        var reviewEntity = reviewRepository.findByCompanyIdAndId(companyId,id).orElseThrow(
-                () -> new EntityNotFoundException("Review with id " + id + " and company id " + companyId + " not found")
+    public void delete(Long id) {
+        var reviewEntity = reviewRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Review with id " + id  + " not found")
         );
         reviewRepository.delete(reviewEntity);
     }
 
     @Override
-    public Review update(Long companyId, Long id, Review review) {
-        var validReview = reviewMapper.insertCompanyId(review, companyId);
-        var reviewEntityOld = reviewRepository.findByCompanyIdAndId(companyId,id).orElseThrow(
-                () -> new EntityNotFoundException("Review with id " + id + " and company id " + companyId + " not found")
+    public Review update(Long id, Review review) {
+        var reviewEntityOld = reviewRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Review with id " + id + " not found")
         );
+        var validReview = reviewMapper.insertCompanyId(review, reviewEntityOld.getCompanyId());
         var reviewEntityNew = reviewMapper.toEntity(validReview);
         reviewEntityNew.setId(reviewEntityOld.getId());
         var result = reviewRepository.save(reviewEntityNew);
