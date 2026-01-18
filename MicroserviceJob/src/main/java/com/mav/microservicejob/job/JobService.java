@@ -1,17 +1,19 @@
 package com.mav.microservicejob.job;
 
+import com.mav.microservicejob.dto.JobWithCompanyDTO;
+
 import java.util.List;
 
 public interface JobService {
-    List<Job> getAll();
+    List<JobWithCompanyDTO> getAll();
 
-    Job getOneById(Long id);
+    JobWithCompanyDTO getOneById(Long id);
 
-    Job create(Job job);
+    JobWithCompanyDTO create(Job job);
 
     void delete(Long id);
 
-    Job update(Long id, Job job);
+    JobWithCompanyDTO update(Long id, Job job);
 
     Long getJobCompany(Long id);
 }

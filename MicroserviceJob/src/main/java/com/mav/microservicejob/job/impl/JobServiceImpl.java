@@ -1,5 +1,6 @@
 package com.mav.microservicejob.job.impl;
 
+import com.mav.microservicejob.dto.JobWithCompanyDTO;
 import com.mav.microservicejob.job.Job;
 import com.mav.microservicejob.job.JobRepository;
 import com.mav.microservicejob.job.JobService;
@@ -21,25 +22,25 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public List<Job> getAll() {
-        return jobRepository.findAll().stream().map(jobMapper::toDomain).toList();
+    public List<JobWithCompanyDTO> getAll() {
+        return jobRepository.findAll().stream().map(jobMapper::toDTO).toList();
     }
 
     @Override
-    public Job getOneById(Long id) {
-        return jobMapper.toDomain(jobRepository.findById(id).orElseThrow(
+    public JobWithCompanyDTO getOneById(Long id) {
+        return jobMapper.toDTO(jobRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Job with id " + id + " does not exist")
         ));
     }
 
     @Override
-    public Job create(Job job) {
+    public JobWithCompanyDTO create(Job job) {
         if (job.maxSalary() < job.minSalary()) {
             throw new IllegalArgumentException("Max salary needs to be greater than min salary");
         }
         var jobEntity = jobMapper.toEntity(job);
         var result = jobRepository.save(jobEntity);
-        return jobMapper.toDomain(result);
+        return jobMapper.toDTO(result);
     }
 
     @Override
@@ -51,7 +52,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public Job update(Long id, Job job) {
+    public JobWithCompanyDTO update(Long id, Job job) {
         var jobEntityOld = jobRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Job with id " + id + " does not exist")
         );
@@ -61,7 +62,7 @@ public class JobServiceImpl implements JobService {
         var jobEntityNew = jobMapper.toEntity(job);
         jobEntityNew.setId(jobEntityOld.getId());
         var result = jobRepository.save(jobEntityNew);
-        return jobMapper.toDomain(result);
+        return jobMapper.toDTO(result);
     }
 
     @Override
