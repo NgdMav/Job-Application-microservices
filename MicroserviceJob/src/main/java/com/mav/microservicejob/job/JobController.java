@@ -1,6 +1,6 @@
 package com.mav.microservicejob.job;
 
-import com.mav.microservicejob.dto.JobDTO;
+import com.mav.microservicejob.job.dto.JobDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

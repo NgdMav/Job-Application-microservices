@@ -1,7 +1,7 @@
-package com.mav.microservicejob.dto;
+package com.mav.microservicejob.job.dto;
 
-import com.mav.microservicejob.external.Company;
-import com.mav.microservicejob.external.Review;
+import com.mav.microservicejob.job.external.Company;
+import com.mav.microservicejob.job.external.Review;
 
 import java.util.Set;
 

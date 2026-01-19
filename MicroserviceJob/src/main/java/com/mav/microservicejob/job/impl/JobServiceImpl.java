@@ -1,6 +1,6 @@
 package com.mav.microservicejob.job.impl;
 
-import com.mav.microservicejob.dto.JobDTO;
+import com.mav.microservicejob.job.dto.JobDTO;
 import com.mav.microservicejob.job.Job;
 import com.mav.microservicejob.job.JobRepository;
 import com.mav.microservicejob.job.JobService;

@@ -1,4 +1,4 @@
-package com.mav.microservicejob.external;
+package com.mav.microservicejob.job.external;
 
 public record Review(
         Long id,
