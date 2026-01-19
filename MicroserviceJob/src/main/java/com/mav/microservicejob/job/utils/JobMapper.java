@@ -10,6 +10,13 @@ import org.springframework.web.client.RestTemplate;
 
 @Component
 public class JobMapper {
+
+    RestTemplate restTemplate;
+
+    public JobMapper(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
     public Job toDomain(JobEntity jobEntity) {
         return new Job(
                 jobEntity.getId(),
@@ -38,8 +45,8 @@ public class JobMapper {
 
     public JobWithCompanyDTO toDTO(JobEntity jobEntity) {
         Job job = toDomain(jobEntity);
-        RestTemplate restTemplate = new RestTemplate();
-        var company = restTemplate.getForObject("http://localhost:8081/companies/" + job.companyId(), Company.class);
+//        RestTemplate restTemplate = new RestTemplate();
+        var company = restTemplate.getForObject("http://MICROSERVICECOMPANY:8081/companies/" + job.companyId(), Company.class);
         if (company == null) throw new EntityNotFoundException("Company with id " + job.companyId() + " not found");
         return new JobWithCompanyDTO(job, company);
     }
