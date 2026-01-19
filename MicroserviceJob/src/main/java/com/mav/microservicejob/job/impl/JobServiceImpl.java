@@ -1,6 +1,6 @@
 package com.mav.microservicejob.job.impl;
 
-import com.mav.microservicejob.dto.JobWithCompanyDTO;
+import com.mav.microservicejob.dto.JobDTO;
 import com.mav.microservicejob.job.Job;
 import com.mav.microservicejob.job.JobRepository;
 import com.mav.microservicejob.job.JobService;
@@ -22,19 +22,19 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public List<JobWithCompanyDTO> getAll() {
+    public List<JobDTO> getAll() {
         return jobRepository.findAll().stream().map(jobMapper::toDTO).toList();
     }
 
     @Override
-    public JobWithCompanyDTO getOneById(Long id) {
+    public JobDTO getOneById(Long id) {
         return jobMapper.toDTO(jobRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Job with id " + id + " does not exist")
         ));
     }
 
     @Override
-    public JobWithCompanyDTO create(Job job) {
+    public JobDTO create(Job job) {
         if (job.maxSalary() < job.minSalary()) {
             throw new IllegalArgumentException("Max salary needs to be greater than min salary");
         }
@@ -52,7 +52,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public JobWithCompanyDTO update(Long id, Job job) {
+    public JobDTO update(Long id, Job job) {
         var jobEntityOld = jobRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Job with id " + id + " does not exist")
         );

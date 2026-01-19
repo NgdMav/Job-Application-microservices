@@ -1,6 +1,6 @@
 package com.mav.microservicejob.job.utils;
 
-import com.mav.microservicejob.dto.JobWithCompanyDTO;
+import com.mav.microservicejob.dto.JobDTO;
 import com.mav.microservicejob.external.Company;
 import com.mav.microservicejob.job.Job;
 import com.mav.microservicejob.job.JobEntity;
@@ -43,11 +43,18 @@ public class JobMapper {
         );
     }
 
-    public JobWithCompanyDTO toDTO(JobEntity jobEntity) {
+    public JobDTO toDTO(JobEntity jobEntity) {
         Job job = toDomain(jobEntity);
-//        RestTemplate restTemplate = new RestTemplate();
         var company = restTemplate.getForObject("http://MICROSERVICECOMPANY:8081/companies/" + job.companyId(), Company.class);
         if (company == null) throw new EntityNotFoundException("Company with id " + job.companyId() + " not found");
-        return new JobWithCompanyDTO(job, company);
+        return new JobDTO(
+                job.id(),
+                job.title(),
+                job.description(),
+                job.minSalary(),
+                job.maxSalary(),
+                job.location(),
+                company
+        );
     }
 }
