@@ -1,5 +1,6 @@
 package com.mav.microservicejob.job;
 
+import com.mav.microservicejob.dto.JobWithCompanyDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,17 +17,17 @@ public class JobController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<Job>> getAll() {
+    public ResponseEntity<List<JobWithCompanyDTO>> getAll() {
         return ResponseEntity.ok(jobService.getAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Job> getOneById(@PathVariable Long id) {
+    public ResponseEntity<JobWithCompanyDTO> getOneById(@PathVariable Long id) {
         return ResponseEntity.ok(jobService.getOneById(id));
     }
 
     @PostMapping("/")
-    public ResponseEntity<Job> create(@Valid @RequestBody Job job) {
+    public ResponseEntity<JobWithCompanyDTO> create(@Valid @RequestBody Job job) {
         return ResponseEntity.ok(jobService.create(job));
     }
 
@@ -37,7 +38,7 @@ public class JobController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Job> update(@PathVariable Long id, @Valid @RequestBody Job job) {
+    public ResponseEntity<JobWithCompanyDTO> update(@PathVariable Long id, @Valid @RequestBody Job job) {
         return ResponseEntity.ok(jobService.update(id, job));
     }
 
