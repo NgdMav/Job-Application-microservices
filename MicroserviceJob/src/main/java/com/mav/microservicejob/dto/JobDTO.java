@@ -1,6 +1,9 @@
 package com.mav.microservicejob.dto;
 
 import com.mav.microservicejob.external.Company;
+import com.mav.microservicejob.external.Review;
+
+import java.util.Set;
 
 public record JobDTO(
         Long id,
@@ -9,6 +12,7 @@ public record JobDTO(
         Double minSalary,
         Double maxSalary,
         String location,
-        Company company
+        Company company,
+        Set<Review> companyReviews
 ) {
 }

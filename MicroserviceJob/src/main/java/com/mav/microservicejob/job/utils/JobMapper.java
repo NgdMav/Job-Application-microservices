@@ -2,11 +2,16 @@ package com.mav.microservicejob.job.utils;
 
 import com.mav.microservicejob.dto.JobDTO;
 import com.mav.microservicejob.external.Company;
+import com.mav.microservicejob.external.Review;
 import com.mav.microservicejob.job.Job;
 import com.mav.microservicejob.job.JobEntity;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Set;
 
 @Component
 public class JobMapper {
@@ -47,6 +52,13 @@ public class JobMapper {
         Job job = toDomain(jobEntity);
         var company = restTemplate.getForObject("http://MICROSERVICECOMPANY:8081/companies/" + job.companyId(), Company.class);
         if (company == null) throw new EntityNotFoundException("Company with id " + job.companyId() + " not found");
+        var companyReviewsResponse = restTemplate.exchange(
+                "http://MICROSERVICEREVIEW:8083/reviews/?companyId=" +  job.companyId(),
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<Set<Review>>() {}
+        );
+        var companyReviews = companyReviewsResponse.getBody();
         return new JobDTO(
                 job.id(),
                 job.title(),
@@ -54,7 +66,8 @@ public class JobMapper {
                 job.minSalary(),
                 job.maxSalary(),
                 job.location(),
-                company
+                company,
+                companyReviews
         );
     }
 }
