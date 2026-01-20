@@ -9,6 +9,7 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,7 +24,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    @CircuitBreaker(name = "companyBreaker")
+    @CircuitBreaker(name = "companyBreaker", fallbackMethod = "companyBreakerFallback")
     public List<JobDTO> getAll() {
         return jobRepository.findAll().stream().map(jobMapper::toDTO).toList();
     }
@@ -33,6 +34,12 @@ public class JobServiceImpl implements JobService {
         return jobMapper.toDTO(jobRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Job with id " + id + " does not exist")
         ));
+    }
+
+    public List<String> companyBreakerFallback(Exception e) {
+        List<String> list = new ArrayList<>();
+        list.add("Dummy");
+        return list;
     }
 
     @Override
