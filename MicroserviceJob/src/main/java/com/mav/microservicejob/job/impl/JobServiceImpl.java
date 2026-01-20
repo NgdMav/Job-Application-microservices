@@ -5,6 +5,7 @@ import com.mav.microservicejob.job.Job;
 import com.mav.microservicejob.job.JobRepository;
 import com.mav.microservicejob.job.JobService;
 import com.mav.microservicejob.job.utils.JobMapper;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    @CircuitBreaker(name = "companyBreaker")
     public List<JobDTO> getAll() {
         return jobRepository.findAll().stream().map(jobMapper::toDTO).toList();
     }
