@@ -3,6 +3,7 @@ package com.mav.microservicecompany.company.impl;
 import com.mav.microservicecompany.company.Company;
 import com.mav.microservicecompany.company.CompanyRepository;
 import com.mav.microservicecompany.company.CompanyService;
+import com.mav.microservicecompany.company.dto.ReviewMessage;
 import com.mav.microservicecompany.company.utils.CompanyMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -56,5 +57,10 @@ public class CompanyServiceImpl implements CompanyService {
         companyEntityNew.setId(companyEntityOld.getId());
         var result = companyRepository.save(companyEntityNew);
         return companyMapper.toDomain(result);
+    }
+
+    @Override
+    public void updateRating(ReviewMessage reviewMessage) {
+
     }
 }
