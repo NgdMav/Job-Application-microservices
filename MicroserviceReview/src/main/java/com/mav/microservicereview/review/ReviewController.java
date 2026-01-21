@@ -1,5 +1,6 @@
 package com.mav.microservicereview.review;
 
+import com.mav.microservicereview.review.messaging.ReviewMessageProducer;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,9 +12,11 @@ import java.util.List;
 class ReviewController {
 
     private final ReviewService reviewService;
+    private final ReviewMessageProducer reviewMessageProducer;
 
-    ReviewController(ReviewService reviewService) {
+    ReviewController(ReviewService reviewService, ReviewMessageProducer reviewMessageProducer) {
         this.reviewService = reviewService;
+        this.reviewMessageProducer = reviewMessageProducer;
     }
 
     @GetMapping("/")
@@ -28,7 +31,9 @@ class ReviewController {
 
     @PostMapping("/")
     public ResponseEntity<Review> create(@RequestParam Long companyId, @Valid @RequestBody Review review) {
-        return ResponseEntity.ok(reviewService.create(companyId, review));
+        var response = ResponseEntity.ok(reviewService.create(companyId, review));
+        reviewMessageProducer.sendReviewMessage(companyId, review);
+        return response;
     }
 
     @DeleteMapping("/{id}")

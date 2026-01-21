@@ -61,6 +61,6 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public void updateRating(ReviewMessage reviewMessage) {
-
+        System.out.println(reviewMessage.toString() + "\n" + reviewMessage.rating());
     }
 }
