@@ -3,6 +3,7 @@ package com.mav.microservicecompany.company.impl;
 import com.mav.microservicecompany.company.Company;
 import com.mav.microservicecompany.company.CompanyRepository;
 import com.mav.microservicecompany.company.CompanyService;
+import com.mav.microservicecompany.company.clients.ReviewClient;
 import com.mav.microservicecompany.company.dto.ReviewMessage;
 import com.mav.microservicecompany.company.utils.CompanyMapper;
 import jakarta.persistence.EntityNotFoundException;
@@ -15,10 +16,12 @@ public class CompanyServiceImpl implements CompanyService {
 
     private final CompanyRepository companyRepository;
     private final CompanyMapper companyMapper;
+    private final ReviewClient reviewClient;
 
-    public CompanyServiceImpl(CompanyRepository companyRepository, CompanyMapper companyMapper) {
+    public CompanyServiceImpl(CompanyRepository companyRepository, CompanyMapper companyMapper, ReviewClient reviewClient) {
         this.companyRepository = companyRepository;
         this.companyMapper = companyMapper;
+        this.reviewClient = reviewClient;
     }
 
     @Override
@@ -62,5 +65,12 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public void updateRating(ReviewMessage reviewMessage) {
         System.out.println(reviewMessage.toString() + "\n" + reviewMessage.rating());
+        var companyEntity = companyRepository.findById(reviewMessage.companyId()).orElseThrow(
+                () -> new EntityNotFoundException("Company with id " + reviewMessage.companyId() + " not found!")
+        );
+
+        double rating = reviewClient.getAverageRating(reviewMessage.companyId());
+        companyEntity.setRating(rating);
+        companyRepository.save(companyEntity);
     }
 }

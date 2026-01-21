@@ -11,7 +11,8 @@ public class CompanyMapper {
         return new Company(
                 companyEntity.getId(),
                 companyEntity.getName(),
-                companyEntity.getDescription()
+                companyEntity.getDescription(),
+                companyEntity.getRating()
         );
     }
 
@@ -19,7 +20,8 @@ public class CompanyMapper {
         return new CompanyEntity(
                 company.id(),
                 company.name(),
-                company.description()
+                company.description(),
+                company.rating()
         );
     }
 }

@@ -2,8 +2,6 @@ package com.mav.microservicecompany.company;
 
 import jakarta.persistence.*;
 
-import java.util.Set;
-
 @Entity
 @Table(name = "companies")
 public class CompanyEntity {
@@ -18,13 +16,17 @@ public class CompanyEntity {
     @Column(name = "description", length = 1000)
     private String description;
 
+    @Column(name = "rating")
+    private Double rating;
+
     public CompanyEntity() {
     }
 
-    public CompanyEntity(Long id, String name, String description) {
+    public CompanyEntity(Long id, String name, String description, Double rating) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.rating = rating;
     }
 
     public Long getId() {
@@ -49,5 +51,13 @@ public class CompanyEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
     }
 }

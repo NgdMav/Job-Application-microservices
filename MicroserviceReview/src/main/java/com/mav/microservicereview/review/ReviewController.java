@@ -46,4 +46,10 @@ class ReviewController {
     public ResponseEntity<Review> update(@PathVariable Long id, @Valid @RequestBody Review review) {
         return ResponseEntity.ok(reviewService.update(id, review));
     }
+
+    @GetMapping("/averageRating")
+    public ResponseEntity<Double> getAverageRating(@RequestParam Long companyId) {
+        var allReviews = reviewService.getAll(companyId);
+        return ResponseEntity.ok(allReviews.stream().mapToDouble(Review::rating).average().orElse(0.0));
+    }
 }
